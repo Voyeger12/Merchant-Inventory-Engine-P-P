@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MerchantInventoryEngine.Tests/MerchantInventoryEngine.Tests.csproj" />
+  <Project Path="MerchantInventoryEngine/MerchantInventoryEngine.csproj" />
+</Solution>
