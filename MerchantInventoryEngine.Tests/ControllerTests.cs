@@ -45,7 +45,7 @@ namespace MerchantInventoryEngine.Tests
 
             // Assert
             Assert.IsNotNull(inventory);
-            Assert.IsTrue(inventory.Count > 0, "Inventory should contain seeded items.");
+            Assert.IsNotEmpty(inventory, "Inventory should contain seeded items.");
 
             var potion = inventory.FirstOrDefault(i => i.ItemName == "Health Potion");
             Assert.IsNotNull(potion);
@@ -124,8 +124,8 @@ namespace MerchantInventoryEngine.Tests
             var low = controller.CalculateInventory(0.1m, 1.0m, 1.0m);
             var high = controller.CalculateInventory(5.0m, 1.0m, 1.0m);
 
-            Assert.IsTrue(low.Count > 0);
-            Assert.IsTrue(high.Count > 0);
+            Assert.IsNotEmpty(low);
+            Assert.IsNotEmpty(high);
         }
 
         [TestCleanup]

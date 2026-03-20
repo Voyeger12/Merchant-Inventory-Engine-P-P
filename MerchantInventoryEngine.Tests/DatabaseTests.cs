@@ -34,11 +34,11 @@ namespace MerchantInventoryEngine.Tests
             var locations = dbHelper.GetModifiersByType("Location");
             var political = dbHelper.GetModifiersByType("Political");
 
-            Assert.IsTrue(categories.Count >= 6, "Expected expanded category seed data.");
-            Assert.IsTrue(items.Count >= 20, "Expected expanded item seed data.");
-            Assert.IsTrue(personalities.Count >= 6, "Expected expanded personality modifiers.");
-            Assert.IsTrue(locations.Count >= 4, "Expected location modifiers.");
-            Assert.IsTrue(political.Count >= 4, "Expected political modifiers.");
+            Assert.IsGreaterThanOrEqualTo(6, categories.Count, "Expected expanded category seed data.");
+            Assert.IsGreaterThanOrEqualTo(20, items.Count, "Expected expanded item seed data.");
+            Assert.IsGreaterThanOrEqualTo(6, personalities.Count, "Expected expanded personality modifiers.");
+            Assert.IsGreaterThanOrEqualTo(4, locations.Count, "Expected location modifiers.");
+            Assert.IsGreaterThanOrEqualTo(4, political.Count, "Expected political modifiers.");
             
             // Spezifische korrekte Zuordnung prüfen
             var ironSword = items.FirstOrDefault(i => i.Name == "Iron Sword");
