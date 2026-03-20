@@ -2,95 +2,127 @@
 
 > Desktop-Anwendung zur Verwaltung und Berechnung eines dynamischen Händler-Inventars für Pen-and-Paper-/Fantasy-Setups.
 
-## Projektstatus
+![Status](https://img.shields.io/badge/status-prototype-blue)
+![Platform](https://img.shields.io/badge/platform-Windows-informational)
+![Framework](https://img.shields.io/badge/.NET-WinForms-purple)
+![Database](https://img.shields.io/badge/database-SQLite-003B57)
+![Tests](https://img.shields.io/badge/tests-MSTest-success)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-- Status: `Prototyp / Schulprojekt`
-- Technologie-Stack: `C#`, `.NET (Windows Forms)`, `SQLite`, `MSTest`
+---
 
-## Hinweis zum Projektkontext
+## Inhaltsverzeichnis
+
+- [Projektüberblick](#projektüberblick)
+- [Projektkontext (Umschulung)](#projektkontext-umschulung)
+- [Hauptfunktionen](#hauptfunktionen)
+- [Technologie-Stack](#technologie-stack)
+- [Architektur](#architektur)
+- [Datenbankstruktur](#datenbankstruktur)
+- [Schnellstart](#schnellstart)
+- [Tests und Qualitätssicherung](#tests-und-qualitätssicherung)
+- [Roadmap](#roadmap)
+- [Lizenz](#lizenz)
+
+---
+
+## Projektüberblick
+
+Die `Merchant Inventory Engine` ist eine lokale Desktop-Anwendung, die Item-Stammdaten in einer `SQLite`-Datei speichert, Preise dynamisch über Multiplikatoren berechnet und Ergebnisse übersichtlich in einer `DataGridView` darstellt.
+
+## Projektkontext (Umschulung)
 
 Dieses Repository wurde im Rahmen einer **Umschulung zum Fachinformatiker für Anwendungsentwicklung (FIAE)** erstellt.
 
-## Features
+## Hauptfunktionen
 
 - Persistente Datenhaltung mit lokaler `SQLite`-Datenbank
-- MVC-nahe Struktur (`Model`, `Controller`, `View`)
-- Dynamische Preisberechnung über gewichtete Multiplikatoren
+- Struktur nach `MVC`-Prinzipien (`Model`, `Controller`, `View`)
+- Dynamische Preisberechnung auf Basis von:
   - Händlerpersönlichkeit
   - Standortfaktoren
-  - politische Rahmenbedingungen
+  - politischen Rahmenbedingungen
 - Inventar-Darstellung in `DataGridView`
 - Filter/Suche nach Name, Kategorie und Preisbereich
-- Export als `CSV`/`TXT` (inkl. robustem CSV-Escaping)
-- Logging (`logs/app.log`)
+- Export als `CSV`/`TXT` mit robustem CSV-Escaping
+- Logging in `logs/app.log`
 - Datenbank-Health-Check (`PRAGMA integrity_check`, `foreign_key_check`)
-- DB-Versionierung/Migration über `SchemaVersion`
-- Unit-Tests für Kernlogik und Export
+- DB-Versionierung und Migration über `SchemaVersion`
+- Unit-Tests für zentrale Geschäftslogik
+
+## Technologie-Stack
+
+- `C#`
+- `.NET` (`Windows Forms`)
+- `SQLite` (`Microsoft.Data.Sqlite`)
+- `MSTest`
 
 ## Architektur
 
 - **Model**: Entitäten (`Item`, `Category`, `Modifier`, `InventoryItem`)
-- **Controller**: Berechnungslogik, Filterung, Export
+- **Controller**: Berechnungslogik, Validierung, Filterung, Export
 - **View**: Windows-Forms-Oberfläche (`Form1`)
-- **Data**: SQLite-Zugriff und Initialisierung (`DatabaseHelper`)
+- **Data**: SQLite-Zugriff, Migrationen, Seed (`DatabaseHelper`)
 - **Services**: Preisberechnung und Logging
 
 ## Datenbankstruktur
 
-Tabellen:
+### Tabellen
 
 - `Categories(Id, Name)`
 - `Items(Id, Name, BasePrice, CategoryId)`
 - `Modifiers(Id, Name, Multiplier, Type)`
 - `SchemaVersion(Id, Version)`
 
-Relevante Relationen/Regeln:
+### Relationen und Regeln
 
 - `Items.CategoryId` → `Categories.Id` (Foreign Key)
-- Aktivierte Fremdschlüsselprüfung (`PRAGMA foreign_keys = ON`)
+- Aktivierte Fremdschlüsselprüfung: `PRAGMA foreign_keys = ON`
+- Integritätsprüfung via `integrity_check` und `foreign_key_check`
 - Eindeutige Indizes für Stammdatenkonsistenz
 
-## Projekt lokal starten
+## Schnellstart
 
 ### Voraussetzungen
 
-- `.NET SDK` (passend zum Projekt-Target)
-- Windows (für `WinForms`)
+- `Windows`
+- `.NET SDK` (passend zum Target Framework)
 
-### Build & Test
+### Build und Tests
 
 ```powershell
 dotnet build
 dotnet test
 ```
 
-### App starten
+### Anwendung starten
 
 ```powershell
 dotnet run --project MerchantInventoryEngine/MerchantInventoryEngine.csproj
 ```
 
-Alternativ über die bereitgestellte `start.bat`:
+Alternativ über den Launcher:
 
 ```powershell
 .\start.bat
 ```
 
-## Qualitätssicherung
+## Tests und Qualitätssicherung
 
-- Unit-Tests (`MerchantInventoryEngine.Tests`)
-- Testfälle u. a. für:
+- Unit-Tests im Projekt `MerchantInventoryEngine.Tests`
+- Abgedeckte Bereiche u. a.:
   - mathematische Preisberechnung
   - CSV-Export inkl. Sonderzeichen
   - Multiplikator-Grenzwerte
   - DB-Integrität / korruptionsnahe Zustände
 
-## Geplante Erweiterungen
+## Roadmap
 
 - Konfigurationsdialog (Exportoptionen, Log-Level)
-- Optionaler Installer/Deployment-Workflow
+- Installer/Deployment-Workflow
 - Weiterer UI-Feinschliff und Usability-Verbesserungen
 
 ## Lizenz
 
-Dieses Projekt steht unter der `MIT License`. Siehe Datei `LICENSE`.
+Dieses Projekt steht unter der `MIT License`.
+Details: siehe Datei `LICENSE`.
