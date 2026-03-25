@@ -7,5 +7,6 @@ namespace MerchantInventoryEngine.Models
         public string CategoryName { get; set; } = string.Empty;
         public decimal BasePrice { get; set; }
         public decimal FinalPrice { get; set; }
+        public string PriceExplanation { get; set; } = string.Empty;
     }
 }

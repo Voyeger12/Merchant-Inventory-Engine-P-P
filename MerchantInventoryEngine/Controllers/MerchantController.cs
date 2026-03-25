@@ -53,13 +53,15 @@ namespace MerchantInventoryEngine.Controllers
             foreach(var item in items)
             {
                 var final = _calculator.CalculateFinalPrice(item.BasePrice, personalityMultiplier, locationMultiplier, politicalMultiplier * factionMultiplier);
+                var explanation = BuildPriceExplanation(item.BasePrice, personalityMultiplier, locationMultiplier, politicalMultiplier, factionMultiplier, final);
                 inventory.Add(new InventoryItem
                 {
                     Id = item.Id,
                     ItemName = item.Name,
                     CategoryName = categories.ContainsKey(item.CategoryId) ? categories[item.CategoryId] : "Unknown",
                     BasePrice = item.BasePrice,
-                    FinalPrice = final
+                    FinalPrice = final,
+                    PriceExplanation = explanation
                 });
             }
 
@@ -85,13 +87,15 @@ namespace MerchantInventoryEngine.Controllers
             foreach (var item in items)
             {
                 var final = _calculator.CalculateFinalPrice(item.BasePrice, personalityMultiplier, locationMultiplier, politicalMultiplier * factionMultiplier);
+                var explanation = BuildPriceExplanation(item.BasePrice, personalityMultiplier, locationMultiplier, politicalMultiplier, factionMultiplier, final);
                 inventory.Add(new InventoryItem
                 {
                     Id = item.Id,
                     ItemName = item.Name,
                     CategoryName = categories.ContainsKey(item.CategoryId) ? categories[item.CategoryId] : "Unknown",
                     BasePrice = item.BasePrice,
-                    FinalPrice = final
+                    FinalPrice = final,
+                    PriceExplanation = explanation
                 });
             }
 
@@ -101,6 +105,8 @@ namespace MerchantInventoryEngine.Controllers
         public List<InventoryItem> FilterInventory(IEnumerable<InventoryItem> source, string? nameQuery, string? category, decimal? minFinalPrice, decimal? maxFinalPrice)
         {
             var query = source ?? Enumerable.Empty<InventoryItem>();
+
+            nameQuery = nameQuery?.Trim();
 
             if (!string.IsNullOrWhiteSpace(nameQuery))
             {
@@ -127,18 +133,44 @@ namespace MerchantInventoryEngine.Controllers
 
         public void ExportToCsv(string filePath, List<InventoryItem> items, bool includeBom = true)
         {
-            var content = BuildCsv(items);
-            var encoding = new UTF8Encoding(includeBom);
-            File.WriteAllText(filePath, content, encoding);
-            AppLogger.Info($"Inventory export written: {filePath}");
+            try
+            {
+                var content = BuildCsv(items);
+                var encoding = new UTF8Encoding(includeBom);
+                File.WriteAllText(filePath, content, encoding);
+                AppLogger.Info($"Inventory export written: {filePath}");
+            }
+            catch (IOException ex)
+            {
+                AppLogger.Error($"Failed to export to {filePath}: {ex.Message}", ex);
+                throw;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                AppLogger.Error($"Access denied writing to {filePath}", ex);
+                throw;
+            }
         }
 
         public async Task ExportToCsvAsync(string filePath, List<InventoryItem> items, bool includeBom = true)
         {
-            var content = BuildCsv(items);
-            var encoding = new UTF8Encoding(includeBom);
-            await File.WriteAllTextAsync(filePath, content, encoding);
-            AppLogger.Info($"Inventory export written (async): {filePath}");
+            try
+            {
+                var content = BuildCsv(items);
+                var encoding = new UTF8Encoding(includeBom);
+                await File.WriteAllTextAsync(filePath, content, encoding);
+                AppLogger.Info($"Inventory export written (async): {filePath}");
+            }
+            catch (IOException ex)
+            {
+                AppLogger.Error($"Failed to export to {filePath}: {ex.Message}", ex);
+                throw;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                AppLogger.Error($"Access denied writing to {filePath}", ex);
+                throw;
+            }
         }
 
         private static string BuildCsv(IEnumerable<InventoryItem> items)
@@ -178,6 +210,24 @@ namespace MerchantInventoryEngine.Controllers
             {
                 throw new ArgumentOutOfRangeException(paramName, $"Multiplier must be between {MinMultiplier} and {MaxMultiplier}.");
             }
+        }
+
+        private static string BuildPriceExplanation(decimal basePrice, decimal personalityMultiplier, decimal locationMultiplier, decimal politicalMultiplier, decimal factionMultiplier, decimal final)
+        {
+            static string F(decimal value) => value.ToString("0.00", CultureInfo.InvariantCulture);
+            var nl = Environment.NewLine;
+
+            return
+                $"PRICE LEDGER OF THE REALM{nl}{nl}" +
+                $"Merchant nature:  x{F(personalityMultiplier)}{nl}" +
+                $"Region factor:    x{F(locationMultiplier)}{nl}" +
+                $"Realm politics:   x{F(politicalMultiplier)}{nl}" +
+                $"Faction standing: x{F(factionMultiplier)}{nl}{nl}" +
+                $"Base price: {F(basePrice)} Gold{nl}" +
+                $"-----------------------------------{nl}" +
+                $"Final price: {F(final)} Gold{nl}" +
+                $"-----------------------------------{nl}{nl}" +
+                $"Formula: {F(basePrice)} * {F(personalityMultiplier)} * {F(locationMultiplier)} * {F(politicalMultiplier)} * {F(factionMultiplier)} = {F(final)}";
         }
     }
 }

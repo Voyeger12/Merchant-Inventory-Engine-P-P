@@ -140,7 +140,7 @@ namespace MerchantInventoryEngine.Tests
             var neutralPotion = neutral.First(i => i.ItemName == "Health Potion");
             var enemyPotion = enemy.First(i => i.ItemName == "Health Potion");
 
-            Assert.IsTrue(enemyPotion.FinalPrice > neutralPotion.FinalPrice);
+            Assert.IsGreaterThan(neutralPotion.FinalPrice, enemyPotion.FinalPrice);
         }
 
         [TestCleanup]

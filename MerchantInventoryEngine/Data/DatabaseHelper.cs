@@ -309,10 +309,10 @@ namespace MerchantInventoryEngine.Data
             connection.Open();
             EnableForeignKeys(connection);
 
-            var command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.CommandText = "SELECT Id, Name, Multiplier, Type FROM Modifiers WHERE Type = $type";
             command.Parameters.AddWithValue("$type", type);
-            
+
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
