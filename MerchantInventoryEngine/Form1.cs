@@ -16,6 +16,7 @@ namespace MerchantInventoryEngine
 {
     public partial class Form1 : Form
     {
+        private readonly DatabaseHelper _db;
         private const int MinGridWidth = 720;
         private const int MinFilterButtonWidth = 110;
         private const int MinNumericWidth = 100;
@@ -29,15 +30,22 @@ namespace MerchantInventoryEngine
         private float _lastFontScale = -1f;
 
         public Form1()
+            : this(new DatabaseHelper(), true)
+        {
+        }
+
+        public Form1(DatabaseHelper db, bool performHealthCheck = true)
         {
             InitializeComponent();
-            var db = new DatabaseHelper();
-            if (!db.IsDatabaseHealthy())
+            _db = db;
+
+            if (performHealthCheck && !_db.IsDatabaseHealthy())
             {
                 MessageBox.Show("Database health check failed. See logs/app.log for details.", "Database warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
             var calc = new PriceCalculator();
-            _controller = new MerchantController(db, calc);
+            _controller = new MerchantController(_db, calc);
             _currentInventory = new List<InventoryItem>();
             _allInventory = new List<InventoryItem>();
         }
@@ -663,6 +671,28 @@ namespace MerchantInventoryEngine
             {
                 AppLogger.Error("Failed to open logs.", ex);
                 MessageBox.Show("Could not open log file.", "Log error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void diagnoseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var logPath = Path.Combine(AppContext.BaseDirectory, "logs", "app.log");
+                var dbHealthy = _db.IsDatabaseHealthy();
+                var diagnostics =
+                    $"Database healthy: {(dbHealthy ? "Yes" : "No")}" + Environment.NewLine +
+                    $"Window size: {ClientSize.Width}x{ClientSize.Height}" + Environment.NewLine +
+                    $"DPI: {DeviceDpi}" + Environment.NewLine +
+                    $"Scale factor: {_lastFontScale:0.00}" + Environment.NewLine +
+                    $"Logs: {logPath}";
+
+                MessageBox.Show(diagnostics, "Diagnostics", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error("Failed to open diagnostics.", ex);
+                MessageBox.Show("Could not gather diagnostics.", "Diagnostics error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

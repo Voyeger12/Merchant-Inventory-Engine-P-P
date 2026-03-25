@@ -28,6 +28,7 @@ namespace MerchantInventoryEngine
             this.priceErklaerungsmodusAnzeigenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logsOffnenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.diagnoseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridViewInventory = new System.Windows.Forms.DataGridView();
             this.buttonCalculate = new System.Windows.Forms.Button();
             this.buttonExport = new System.Windows.Forms.Button();
@@ -149,7 +150,8 @@ namespace MerchantInventoryEngine
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.logsOffnenToolStripMenuItem});
+            this.logsOffnenToolStripMenuItem,
+            this.diagnoseToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -160,6 +162,13 @@ namespace MerchantInventoryEngine
             this.logsOffnenToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.logsOffnenToolStripMenuItem.Text = "Logs öffnen";
             this.logsOffnenToolStripMenuItem.Click += new System.EventHandler(this.logsOffnenToolStripMenuItem_Click);
+            // 
+            // diagnoseToolStripMenuItem
+            // 
+            this.diagnoseToolStripMenuItem.Name = "diagnoseToolStripMenuItem";
+            this.diagnoseToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.diagnoseToolStripMenuItem.Text = "Diagnose";
+            this.diagnoseToolStripMenuItem.Click += new System.EventHandler(this.diagnoseToolStripMenuItem_Click);
             // 
             // dataGridViewInventory
             // 
@@ -451,6 +460,7 @@ namespace MerchantInventoryEngine
         private System.Windows.Forms.ToolStripMenuItem priceErklaerungsmodusAnzeigenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logsOffnenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem diagnoseToolStripMenuItem;
         private System.Windows.Forms.Panel panelPriceExplanation;
         private System.Windows.Forms.Label labelPriceExplanationTitle;
         private System.Windows.Forms.TextBox textBoxPriceExplanation;
