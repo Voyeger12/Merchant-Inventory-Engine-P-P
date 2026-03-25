@@ -128,6 +128,21 @@ namespace MerchantInventoryEngine.Tests
             Assert.IsNotEmpty(high);
         }
 
+        [TestMethod]
+        public void CalculateInventory_WithFactionMultiplier_ChangesPrice()
+        {
+            var dbHelper = new DatabaseHelper($"Data Source={_testDbPath}");
+            var controller = new MerchantController(dbHelper, new PriceCalculator());
+
+            var neutral = controller.CalculateInventory(1.0m, 1.0m, 1.0m, 1.0m);
+            var enemy = controller.CalculateInventory(1.0m, 1.0m, 1.0m, 1.5m);
+
+            var neutralPotion = neutral.First(i => i.ItemName == "Health Potion");
+            var enemyPotion = enemy.First(i => i.ItemName == "Health Potion");
+
+            Assert.IsTrue(enemyPotion.FinalPrice > neutralPotion.FinalPrice);
+        }
+
         [TestCleanup]
         public void Cleanup()
         {

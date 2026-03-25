@@ -19,12 +19,14 @@ namespace MerchantInventoryEngine
             this.comboBoxPersonality = new System.Windows.Forms.ComboBox();
             this.comboBoxLocation = new System.Windows.Forms.ComboBox();
             this.comboBoxPolitical = new System.Windows.Forms.ComboBox();
+            this.comboBoxFaction = new System.Windows.Forms.ComboBox();
             this.dataGridViewInventory = new System.Windows.Forms.DataGridView();
             this.buttonCalculate = new System.Windows.Forms.Button();
             this.buttonExport = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.comboBoxCategoryFilter = new System.Windows.Forms.ComboBox();
             this.numericUpDownMinPrice = new System.Windows.Forms.NumericUpDown();
@@ -71,6 +73,15 @@ namespace MerchantInventoryEngine
             this.comboBoxPolitical.Size = new System.Drawing.Size(121, 23);
             this.comboBoxPolitical.TabIndex = 2;
             // 
+            // comboBoxFaction
+            // 
+            this.comboBoxFaction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxFaction.FormattingEnabled = true;
+            this.comboBoxFaction.Location = new System.Drawing.Point(357, 12);
+            this.comboBoxFaction.Name = "comboBoxFaction";
+            this.comboBoxFaction.Size = new System.Drawing.Size(170, 23);
+            this.comboBoxFaction.TabIndex = 3;
+            // 
             // dataGridViewInventory
             // 
             this.dataGridViewInventory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -82,7 +93,7 @@ namespace MerchantInventoryEngine
             // 
             // buttonCalculate
             // 
-            this.buttonCalculate.Location = new System.Drawing.Point(260, 70);
+            this.buttonCalculate.Location = new System.Drawing.Point(357, 70);
             this.buttonCalculate.Name = "buttonCalculate";
             this.buttonCalculate.Size = new System.Drawing.Size(100, 23);
             this.buttonCalculate.TabIndex = 4;
@@ -126,6 +137,15 @@ namespace MerchantInventoryEngine
             this.label3.Size = new System.Drawing.Size(50, 15);
             this.label3.TabIndex = 8;
             this.label3.Text = "Political";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(281, 15);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(45, 15);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "Faction";
             // 
             // textBoxSearch
             // 
@@ -248,6 +268,7 @@ namespace MerchantInventoryEngine
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(980, 518);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -264,6 +285,7 @@ namespace MerchantInventoryEngine
             this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.buttonCalculate);
             this.Controls.Add(this.dataGridViewInventory);
+            this.Controls.Add(this.comboBoxFaction);
             this.Controls.Add(this.comboBoxPolitical);
             this.Controls.Add(this.comboBoxLocation);
             this.Controls.Add(this.comboBoxPersonality);
@@ -283,6 +305,7 @@ namespace MerchantInventoryEngine
         private System.Windows.Forms.ComboBox comboBoxPersonality;
         private System.Windows.Forms.ComboBox comboBoxLocation;
         private System.Windows.Forms.ComboBox comboBoxPolitical;
+        private System.Windows.Forms.ComboBox comboBoxFaction;
         private System.Windows.Forms.DataGridView dataGridViewInventory;
         private System.Windows.Forms.Button buttonCalculate;
         private System.Windows.Forms.Button buttonExport;
@@ -299,6 +322,7 @@ namespace MerchantInventoryEngine
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolTip toolTip1;

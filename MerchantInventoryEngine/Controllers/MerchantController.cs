@@ -36,9 +36,15 @@ namespace MerchantInventoryEngine.Controllers
 
         public List<InventoryItem> CalculateInventory(decimal personalityMultiplier, decimal locationMultiplier, decimal politicalMultiplier)
         {
+            return CalculateInventory(personalityMultiplier, locationMultiplier, politicalMultiplier, 1.0m);
+        }
+
+        public List<InventoryItem> CalculateInventory(decimal personalityMultiplier, decimal locationMultiplier, decimal politicalMultiplier, decimal factionMultiplier)
+        {
             ValidateMultiplierRange(personalityMultiplier, nameof(personalityMultiplier));
             ValidateMultiplierRange(locationMultiplier, nameof(locationMultiplier));
             ValidateMultiplierRange(politicalMultiplier, nameof(politicalMultiplier));
+            ValidateMultiplierRange(factionMultiplier, nameof(factionMultiplier));
 
             var items = _db.GetItems();
             var categories = _db.GetCategories().ToDictionary(c => c.Id, c => c.Name);
@@ -46,7 +52,7 @@ namespace MerchantInventoryEngine.Controllers
 
             foreach(var item in items)
             {
-                var final = _calculator.CalculateFinalPrice(item.BasePrice, personalityMultiplier, locationMultiplier, politicalMultiplier);
+                var final = _calculator.CalculateFinalPrice(item.BasePrice, personalityMultiplier, locationMultiplier, politicalMultiplier * factionMultiplier);
                 inventory.Add(new InventoryItem
                 {
                     Id = item.Id,
@@ -60,11 +66,17 @@ namespace MerchantInventoryEngine.Controllers
             return inventory;
         }
 
-        public async Task<List<InventoryItem>> CalculateInventoryAsync(decimal personalityMultiplier, decimal locationMultiplier, decimal politicalMultiplier)
+        public Task<List<InventoryItem>> CalculateInventoryAsync(decimal personalityMultiplier, decimal locationMultiplier, decimal politicalMultiplier)
+        {
+            return CalculateInventoryAsync(personalityMultiplier, locationMultiplier, politicalMultiplier, 1.0m);
+        }
+
+        public async Task<List<InventoryItem>> CalculateInventoryAsync(decimal personalityMultiplier, decimal locationMultiplier, decimal politicalMultiplier, decimal factionMultiplier)
         {
             ValidateMultiplierRange(personalityMultiplier, nameof(personalityMultiplier));
             ValidateMultiplierRange(locationMultiplier, nameof(locationMultiplier));
             ValidateMultiplierRange(politicalMultiplier, nameof(politicalMultiplier));
+            ValidateMultiplierRange(factionMultiplier, nameof(factionMultiplier));
 
             var items = await _db.GetItemsAsync();
             var categories = (await _db.GetCategoriesAsync()).ToDictionary(c => c.Id, c => c.Name);
@@ -72,7 +84,7 @@ namespace MerchantInventoryEngine.Controllers
 
             foreach (var item in items)
             {
-                var final = _calculator.CalculateFinalPrice(item.BasePrice, personalityMultiplier, locationMultiplier, politicalMultiplier);
+                var final = _calculator.CalculateFinalPrice(item.BasePrice, personalityMultiplier, locationMultiplier, politicalMultiplier * factionMultiplier);
                 inventory.Add(new InventoryItem
                 {
                     Id = item.Id,

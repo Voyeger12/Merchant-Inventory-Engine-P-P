@@ -83,16 +83,20 @@ namespace MerchantInventoryEngine
             StyleComboBox(comboBoxPersonality);
             StyleComboBox(comboBoxLocation);
             StyleComboBox(comboBoxPolitical);
+            StyleComboBox(comboBoxFaction);
 
             label1.Font = titleFont;
             label2.Font = titleFont;
             label3.Font = titleFont;
+            label8.Font = titleFont;
             label1.ForeColor = Color.FromArgb(43, 30, 18);
             label2.ForeColor = Color.FromArgb(43, 30, 18);
             label3.ForeColor = Color.FromArgb(43, 30, 18);
+            label8.ForeColor = Color.FromArgb(43, 30, 18);
             label1.Text = "Merchant Trait";
             label2.Text = "Region";
             label3.Text = "Realm Politics";
+            label8.Text = "Faction";
             label4.Text = "Search";
             label5.Text = "Category";
             label6.Text = "Min";
@@ -185,6 +189,10 @@ namespace MerchantInventoryEngine
             comboBoxPolitical.DisplayMember = "Name";
             comboBoxPolitical.ValueMember = "Multiplier";
 
+            comboBoxFaction.DataSource = await _controller.GetModifiersAsync("Faction");
+            comboBoxFaction.DisplayMember = "Name";
+            comboBoxFaction.ValueMember = "Multiplier";
+
             comboBoxCategoryFilter.DataSource = new List<string> { "All" };
         }
 
@@ -192,12 +200,13 @@ namespace MerchantInventoryEngine
         {
             if (TryGetSelectedMultiplier(comboBoxPersonality, out var pMult) &&
                 TryGetSelectedMultiplier(comboBoxLocation, out var lMult) &&
-                TryGetSelectedMultiplier(comboBoxPolitical, out var polMult))
+                TryGetSelectedMultiplier(comboBoxPolitical, out var polMult) &&
+                TryGetSelectedMultiplier(comboBoxFaction, out var factionMult))
             {
                 try
                 {
                     SetStatus("Calculating...");
-                    _allInventory = await _controller.CalculateInventoryAsync(pMult, lMult, polMult);
+                    _allInventory = await _controller.CalculateInventoryAsync(pMult, lMult, polMult, factionMult);
                     _currentInventory = _allInventory.ToList();
                     BindInventory(_currentInventory);
                     PopulateCategoryFilter();
@@ -329,6 +338,7 @@ namespace MerchantInventoryEngine
             toolTip1.SetToolTip(comboBoxPersonality, "Merchant personality multiplier");
             toolTip1.SetToolTip(comboBoxLocation, "Location multiplier");
             toolTip1.SetToolTip(comboBoxPolitical, "Political situation multiplier");
+            toolTip1.SetToolTip(comboBoxFaction, "Faction/reputation multiplier");
             toolTip1.SetToolTip(buttonCalculate, "Calculate final prices");
             toolTip1.SetToolTip(buttonExport, "Export current view to CSV/TXT");
             toolTip1.SetToolTip(buttonApplyFilter, "Apply search and price filters");

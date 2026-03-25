@@ -117,6 +117,13 @@ namespace MerchantInventoryEngine.Data
                 command.ExecuteNonQuery();
                 SetSchemaVersion(connection, 2);
                 AppLogger.Info("Applied DB migration: v2");
+                currentVersion = 2;
+            }
+
+            if (currentVersion < 3)
+            {
+                SetSchemaVersion(connection, 3);
+                AppLogger.Info("Applied DB migration: v3 (Faction modifiers)");
             }
         }
 
@@ -188,7 +195,13 @@ namespace MerchantInventoryEngine.Data
                 ('Trade Embargo', 1.40, 'Political'),
                 ('War', 2.00, 'Political'),
                 ('Royal Subsidy', 0.85, 'Political'),
-                ('Rebellion', 1.60, 'Political');
+                ('Rebellion', 1.60, 'Political'),
+
+                ('Allied', 0.80, 'Faction'),
+                ('Friendly', 0.90, 'Faction'),
+                ('Neutral', 1.00, 'Faction'),
+                ('Hostile', 1.25, 'Faction'),
+                ('Enemy', 1.50, 'Faction');
             ";
             cmd.ExecuteNonQuery();
         }

@@ -42,6 +42,7 @@ Dieses Repository wurde im Rahmen einer **Umschulung zum Fachinformatiker für A
   - Händlerpersönlichkeit
   - Standortfaktoren
   - politischen Rahmenbedingungen
+  - Fraktions-/Reputationsstatus (`Allied`, `Friendly`, `Neutral`, `Hostile`, `Enemy`)
 - Inventar-Darstellung in `DataGridView`
 - Filter/Suche nach Name, Kategorie und Preisbereich
 - Export als `CSV`/`TXT` mit robustem CSV-Escaping
@@ -80,6 +81,7 @@ Dieses Repository wurde im Rahmen einer **Umschulung zum Fachinformatiker für A
 - Aktivierte Fremdschlüsselprüfung: `PRAGMA foreign_keys = ON`
 - Integritätsprüfung via `integrity_check` und `foreign_key_check`
 - Eindeutige Indizes für Stammdatenkonsistenz
+- Migrationen aktuell bis `v3` (inkl. Fraktions-Modifikatoren)
 
 ## Schnellstart
 
@@ -114,6 +116,7 @@ Alternativ über den Launcher:
   - mathematische Preisberechnung
   - CSV-Export inkl. Sonderzeichen
   - Multiplikator-Grenzwerte
+  - Fraktions-Einfluss auf den Endpreis
   - DB-Integrität / korruptionsnahe Zustände
 
 ## Roadmap
